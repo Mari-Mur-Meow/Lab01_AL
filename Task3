@@ -1,0 +1,106 @@
+using System;
+using System.Collections.Generic;
+
+namespace Task_3
+{
+    public class Point {
+        int x;
+        int y;
+
+        public double X { get { return x; } }
+        public double Y { get { return y; } }
+        public Point(int a, int b) => (x, y) = (a, b);
+    }
+
+    public class Figure
+    {
+
+        Point[] points;
+        public string Name { get; set; }
+
+        public Figure(string name,Point point1, Point point2, Point point3)
+        {
+            points = new Point[3] { point1, point2, point3 };
+            Name = name;
+        }
+        public Figure(string name, Point point1, Point point2, Point point3, Point point4) : this(name,point1, point2, point3)
+        {
+            Array.Resize(ref points, 4);
+            points[3] = point4;
+            Name = name;
+        }
+        public Figure(string name, Point point1, Point point2, Point point3, Point point4, Point point5) : this(name,point1, point2, point3, point4)
+        {
+            Array.Resize(ref points, 5);
+            points[4] = point5;
+            Name = name;
+        }
+
+        public double LengthSide(Point A, Point B)
+        {
+            double dx = A.X - B.X; 
+            double dy = A.Y - B.Y;  
+            return Math.Sqrt(dx * dx + dy * dy);
+        }
+        public double PerimeterCalculator()
+        {
+            double sum = 0;
+            for (int i = 0; i < points.Length; i++)
+            {
+                sum += LengthSide(points[i], points[(i + 1) % points.Length]);
+            }
+            return sum;
+        }
+
+    }
+
+
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+            Console.WriteLine("Hello world!");
+            List<Point> vertices = new List<Point>(0);
+
+            Console.WriteLine("Введите Кол-во точек:");
+            int n = int.Parse(Console.ReadLine());
+
+            if (n <3 ||  n >5) { 
+                Console.WriteLine("Неккоректное число вершин, введите корректное число вершин от 3 до 5");
+                int newn = int.Parse(Console.ReadLine());
+                n = newn;
+            }
+            
+            Console.WriteLine("Введите имя вашей фигуры:");
+            string NameFigure = Console.ReadLine();
+            Console.WriteLine("Указывайте точки с учетом того, что они будут соединется ребрами \nв той последовательности,в которой вы их указали\n");
+            for (int i = 0; i < n; i++) {
+                Console.WriteLine($"Введите Point {i+1}:");
+                string[] coords = Console.ReadLine().Split();
+        
+                int pointx = int.Parse(coords[0]);
+                int pointy = int.Parse(coords[1]);
+
+                vertices.Add(new Point(pointx, pointy));
+
+            }
+            Figure MyFigure;
+            
+            if (n == 3) { MyFigure = new Figure(NameFigure, vertices[0], vertices[1], vertices[2]); }
+            else if (n == 4) { MyFigure = new Figure(NameFigure, vertices[0], vertices[1], vertices[2], vertices[3]); }
+            else { MyFigure = new Figure(NameFigure, vertices[0], vertices[1], vertices[2], vertices[3], vertices[4]); }
+
+            double perimetr = MyFigure.PerimeterCalculator(); 
+            Console.WriteLine( $"Периметр {MyFigure.Name}= {perimetr.ToString()}" );
+
+            //double test = MyFigure.LengthSide(vertices[0], vertices[1]);
+            //Console.WriteLine($"{test}");
+
+            //double test1 = MyFigure.LengthSide(vertices[0], vertices[3]);
+            //Console.WriteLine($"{test1}");
+            //double test2 = MyFigure.LengthSide(vertices[1], vertices[2]);
+            //Console.WriteLine($"{test2}");
+            //double test3 = MyFigure.LengthSide(vertices[2], vertices[3]);
+        }
+    }
+}
