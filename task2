@@ -1,0 +1,44 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace task_2
+{
+    public class rectangle
+    {
+        private double SideA;
+        private double SideB;
+
+        public rectangle(double sideA, double sideB)
+        {
+            SideA = sideA;
+            SideB = sideB;
+        }
+
+        private double CalculateArea() => SideB * SideA;
+        private double CalculatePerimeter() => (SideB + SideA) * 2;
+
+        public double Area { get { return CalculateArea(); }}
+        public double Perimeter{ get { return CalculatePerimeter(); } }
+
+    }
+
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+            Console.WriteLine("Введите SideA:");
+            double sideA = double.Parse(Console.ReadLine());//parse - конвертация из строки в double
+
+            Console.WriteLine("Введите SideB:");
+            double sideB = double.Parse(Console.ReadLine());
+
+            rectangle Rectangle = new rectangle(sideA, sideB);
+
+            Console.WriteLine($"Площадь прямоугольника: {Rectangle.Area}");
+            Console.WriteLine($"Периметр прямоугольника: {Rectangle.Perimeter}");
+        }
+    }
+}
